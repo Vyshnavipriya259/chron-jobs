@@ -1,0 +1,27 @@
+name: Auto Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "* * * * *"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2 Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /usr/share/nginx/html
+            git pull origin main
+            sudo systemctl restart nginx

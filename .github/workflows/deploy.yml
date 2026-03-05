@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Workflow triggered at $(date)" >> /home/ec2-user/deploy-log.txt
+            echo "Workflow triggered at $(TZ='Asia/Kolkata' date)" >> /home/ec2-user/deploy-log.txt
             cd /usr/share/nginx/html/chron-jobs
             git pull origin main
             sudo cp index.html /usr/share/nginx/html/
